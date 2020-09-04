@@ -15,6 +15,9 @@ body {
     padding: 30px;
     text-align: center;
 }
+#pin-value{
+    text-align: center;
+}
 .generate-btn{
     margin-top: 140px;
     width: 180px;
@@ -87,7 +90,7 @@ color: #E0B612;
     background: #495BC3;
     color: #fff;
 }
-.notify {
+#notify-correct, #notify-wrong {
     color: #fff;
     text-align: center;
     margin: 0 auto;
@@ -95,6 +98,7 @@ color: #E0B612;
     margin-top: 20px;
     border-radius: 15px;
     padding: 5px 20px;
+    display: none;
 }
 .notify-section{
     width: 35%;
@@ -103,4 +107,7 @@ color: #E0B612;
 .action-left {
     color: #FF3C5F;
     margin-top: 10px;
+}
+#button-value{
+    text-align: center;
 }

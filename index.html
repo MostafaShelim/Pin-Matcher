@@ -12,13 +12,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
-                    <button class="generate-btn">Generate Pin</button>
+                    <input id="pin-value" class="form-control" type="text">
+                    <button id="generate-pin" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <input id="button-value" class="form-control" type="text">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
@@ -42,17 +42,75 @@
                                 <div class="button">C</div>
                             </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <button id="button-click" type="submit" class="submit-btn">Submit</button>
+                                <p class="action-left"><span id="try-count">3</span> try left</p>
                             </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            <p id="notify-wrong">❌ Pin Didn't Match, Please try again</p>
+            <p id="notify-correct">✅ Pin Matched... Secret door is opening for you</p>
         </div>
     </div>
+    <script>
+        let RandomValue = 0;
+        function printClickNum(numOrOperatorValue){
+            document.getElementById('button-value').value = numOrOperatorValue;
+        }
+        function getClickedNum(){
+            return document.getElementById('button-value').value;
+        }
+        function FourDigitRandomNum(){
+            const randomNum  = Math.floor(1000 + Math.random() * 9000);
+            return randomNum;
+        }
+        
+        const pinBtnClick = document.getElementById('generate-pin');
+        pinBtnClick.addEventListener('click', function(){
+            RandomValue = FourDigitRandomNum();
+            document.getElementById('pin-value').value = RandomValue;
+            document.getElementById('notify-correct').style.display = 'none';
+            document.getElementById('notify-wrong').style.display = 'none';
+            printClickNum("");
+        })
+        let NumberAndOperator = document.getElementsByClassName('button');
+        for(let i = 0; i < NumberAndOperator.length; i++){
+            NumberAndOperator[i].addEventListener('click', function(){
+                const button = NumberAndOperator[i].innerText;
+                let buttonValues = getClickedNum();
+                if(button == '<'){
+                    let CanceledValue = buttonValues.substr(0, buttonValues.length-1);
+                    printClickNum(CanceledValue);
+                }else if(button == 'C'){
+                    printClickNum("");
+                }else{
+                    const output = getClickedNum() + button;
+                    printClickNum(getClickedNum() + button);
+                }
+            })
+        }
+
+        const submitClick = document.getElementById('button-click');
+        submitClick.addEventListener('click', function(){
+            if(getClickedNum() == 0)alert("please give the pin numbers");
+            else if(RandomValue == 0)alert("please generate the pin number");
+            else {
+                let tryCount = parseFloat(document.getElementById('try-count').innerText);
+                if(tryCount == 0)alert("You are tried and tired too  much");
+                if(parseFloat(getClickedNum()) == parseFloat(RandomValue)){
+                    document.getElementById('notify-correct').style.display = 'block';
+                    document.getElementById('notify-wrong').style.display = 'none';
+                }else if(tryCount>0){
+                    document.getElementById('notify-wrong').style.display = 'block';
+                    document.getElementById('notify-correct').style.display = 'none';
+                    
+                    tryCount = parseFloat(document.getElementById('try-count').innerText);
+                    document.getElementById('try-count').innerText = tryCount - 1;
+                }
+                }
+        })
+    </script>
 </body>
 </html>
